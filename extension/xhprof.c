@@ -309,6 +309,8 @@ static inline zval  *hp_zval_at_key(char  *key,
 static inline char **hp_strings_in_zval(zval  *values);
 static inline void   hp_array_del(char **name_array);
 
+void free_func_name();
+
 /* {{{ arginfo */
 ZEND_BEGIN_ARG_INFO_EX(arginfo_xhprof_enable, 0, 0, 0)
   ZEND_ARG_INFO(0, flags)
