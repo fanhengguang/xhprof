@@ -716,6 +716,7 @@ void hp_clean_profiler_state(TSRMLS_D) {
     efree(hp_globals.stats_count);
     hp_globals.stats_count = NULL;
   }
+  free_func_name();
   hp_globals.entries = NULL;
   hp_globals.profiler_level = 1;
   hp_globals.ever_enabled = 0;
@@ -724,6 +725,21 @@ void hp_clean_profiler_state(TSRMLS_D) {
   //hp_array_del(hp_globals.ignored_function_names);
   hp_globals.ignored_function_names = NULL;
 }
+
+
+
+void free_func_name()
+{
+	hp_entry_t *cur = NULL;
+	cur = hp_globals.entries;
+	while (cur) {
+		zend_string_free(cur->name_hprof);
+		cur = cur->prev_hprof;
+	}
+}
+
+
+
 
 /*
  * Start profiling - called just before calling the actual function
