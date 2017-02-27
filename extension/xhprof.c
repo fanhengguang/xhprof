@@ -707,6 +707,10 @@ void hp_init_profiler_state(int level TSRMLS_DC) {
  * @author kannan, veeve
  */
 void hp_clean_profiler_state(TSRMLS_D) {
+	printf("hp_clean_profiler_state is called\n");
+	if (hp_globals.entries) {
+		printf("111entitys is not null\n");
+	}
   /* Call current mode's exit cb */
   hp_globals.mode_cb.exit_cb(TSRMLS_C);
 
@@ -732,7 +736,13 @@ void hp_clean_profiler_state(TSRMLS_D) {
 
 void free_func_name()
 {
+	printf("free_func_name is called\n");
 	hp_entry_t *cur = NULL;
+
+	if (hp_globals.entries) {
+		printf("entitys is not null\n");
+	}
+
 	cur = hp_globals.entries;
 	while (cur) {
 		zend_string_free(cur->name_hprof);
@@ -958,6 +968,7 @@ static void hp_free_the_free_list() {
   while (p) {
     cur = p;
     p = p->prev_hprof;
+    zend_string_release(cur->name_hprof);
     free(cur);
   }
 }
@@ -1711,6 +1722,16 @@ static void hp_begin(long level, long xhprof_flags TSRMLS_DC) {
  * Called at request shutdown time. Cleans the profiler's global state.
  */
 static void hp_end(TSRMLS_D) {
+
+
+	if (hp_globals.entries) {
+		printf("222entitys is not null\n");
+	}
+	if (hp_globals.entry_free_list) {
+		printf("222entitys_free_list is not null\n");
+	}
+
+
   /* Bail if not ever enabled */
   if (!hp_globals.ever_enabled) {
     return;
